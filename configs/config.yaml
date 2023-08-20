@@ -1,7 +1,7 @@
 defaults:
   rng_seed: 0xa1221f97
   learning_rate: 1e-5
-  gradient_checkpointing: false
+  gradient_checkpointing: true
   gradient_accumulation_steps: 32
   per_device_train_batch_size: 2
   per_device_eval_batch_size: 2
@@ -14,10 +14,10 @@ defaults:
   save_strategy: steps
   save_steps: 1000
   num_train_epochs: 3
-  logging_steps: 10
+  logging_steps: 1
   max_grad_norm: 3.0
   save_total_limit: 4
-  dtype: fp16
+  dtype: bf16
   eval_accumulation_steps:
   cache_dir: .cache
   fuse_gelu: true
@@ -76,7 +76,7 @@ debug:
 
 
   # Wandb
-  wandb_entity: "jordanclive"
+  wandb_entity: "asdfffjj"
   wandb_project: "scaled-rope-lora"
 
   # Flash/Lora
@@ -93,16 +93,16 @@ debug:
 lora-7b-llama2:
   # Model
   output_dir: llama_model_7b_lora
-  tokenizer_name: "meta-llama/Llama-2-7b-hf"
-  model_name_or_path: "meta-llama/Llama-2-7b-hf"
-  deepspeed_config: configs/zero2_config.json
+  tokenizer_name: "/home/jue/llama-2-7b"
+  model_name_or_path: "/home/jue/llama-2-7b"
+  deepspeed_config: configs/zero3_offload_config.json
 
   # schedule
   learning_rate: 1e-4
   warmup_steps: 50
   gradient_checkpointing: true
   ddp_find_unused_parameters: false
-  gradient_accumulation_steps: 16
+  gradient_accumulation_steps: 1
   per_device_train_batch_size: 4
   per_device_eval_batch_size: 1
   save_strategy: "steps"
@@ -113,15 +113,15 @@ lora-7b-llama2:
   evaluation_strategy: "steps"
 
   #Guanaco specific
-  residual_dropout: 0.3
+  residual_dropout: 0.0
   adam_beta2: 0.99
   peft_config:
     r: 64
     alpha: 16
-    dropout: 0.05
+    dropout: 0.0
 
   # Wandb
-  wandb_entity: "jordanclive"
+  wandb_entity: "asdfffjj"
   wandb_project: "lora-scaled-rope"
 
   # Flash/Lora
@@ -136,11 +136,12 @@ lora-7b-llama2:
   pretokenized: False
   multinode: true
 
+
 lora-70b-llama2:
   output_dir: llama_model_70b_lora
-  tokenizer_name: "meta-llama/Llama-2-70b-hf"
-  model_name_or_path: "meta-llama/Llama-2-70b-hf"
-  deepspeed_config: configs/zero3_config.json
+  tokenizer_name: "/home/jue/llama-2-70b"
+  model_name_or_path: "/home/jue/llama-2-70b"
+  deepspeed_config: configs/zero3_offload_config.json
 
   # schedule
   learning_rate: 1e-4
@@ -158,15 +159,15 @@ lora-70b-llama2:
   evaluation_strategy: "steps"
 
   #Guanaco specific
-  residual_dropout: 0.3
+  residual_dropout: 0.0
   adam_beta2: 0.99
   peft_config:
     r: 64
     alpha: 16
-    dropout: 0.05
+    dropout: 0.0
 
   # Wandb
-  wandb_entity: "jordanclive"
+  wandb_entity: "asdfffjj"
   wandb_project: "lora-scaled-rope"
 
   # Flash/Lora
@@ -174,7 +175,7 @@ lora-70b-llama2:
   lora: true
 
   # Linear Scaling
-  max_position_embeddings: 8192 #32768 #16384 #8192
+  max_position_embeddings: 32768 #32768 #16384 #8192
   max_val_set: 100
   dataset_names:
     - "Multi-Domain-Expert-Layers/the_pile_books3_packed_128k"
